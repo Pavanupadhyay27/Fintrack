@@ -1,0 +1,164 @@
+<div class="dashboard">
+  <div class="dashboard-title">
+    <h1>Dashboard Overview</h1>
+    <p>A quick view of your income, spending, and monthly budget.</p>
+  </div>
+
+  <div class="summary">
+    <div class="card">
+      <div class="card-label">Total Income</div>
+      <div class="card-value income">+₹{{ (totalIncome || 0) | number: '1.2-2' }}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Total Expense</div>
+      <div class="card-value expense">-₹{{ (totalExpense || 0) | number: '1.2-2' }}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Balance</div>
+      <div class="card-value" [class.negative]="(balance || 0) < 0">
+        ₹{{ (balance || 0) | number: '1.2-2' }}
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">Budget Used</div>
+      <div class="card-value">{{ (budgetLimit && budgetLimit > 0) ? (((totalExpense || 0) / budgetLimit * 100) | number: '0.0-0') : '—' }}%</div>
+    </div>
+  </div>
+
+  <div class="budget-section">
+    <div class="budget-box">
+      <!-- If budget not set yet -->
+      <div *ngIf="budgetLimit === 0 && !isEditingBudget">
+        <label>Set Your Budget Limit (₹)</label>
+        <p class="budget-hint">Set your monthly budget to track your spending</p>
+        <div class="budget-input-group">
+          <input type="number" [(ngModel)]="budgetInput" placeholder="Enter budget limit" />
+          <button class="btn-set" (click)="setBudgetLimit()">Set Budget</button>
+        </div>
+      </div>
+
+      <!-- If budget is set -->
+      <div *ngIf="budgetLimit > 0 && !isEditingBudget">
+        <div class="budget-display">
+          <div class="budget-header">
+            <h3>Budget Limit</h3>
+            <button class="btn-edit" (click)="toggleEditBudget()">Edit</button>
+          </div>
+          <div class="budget-info">
+            <span>Budget: ₹{{ (budgetLimit || 0) | number: '1.2-2' }}</span>
+            <span>Spent: ₹{{ (totalExpense || 0) | number: '1.2-2' }}</span>
+            <span>Left: ₹{{ ((budgetLimit || 0) - (totalExpense || 0)) | number: '1.2-2' }}</span>
+          </div>
+          <div class="budget-bar">
+            <div class="budget-progress" [style.width.%]="(budgetLimit && budgetLimit > 0) ? ((totalExpense || 0) / budgetLimit * 100) : 0"
+              [class.warning]="(totalExpense || 0) > (budgetLimit || 0) * 0.8"
+              [class.over]="(totalExpense || 0) > (budgetLimit || 0)">
+            </div>
+          </div>
+          <div *ngIf="(totalExpense || 0) > (budgetLimit || 0)" class="warning-text">
+            Budget exceeded by ₹{{ ((totalExpense || 0) - (budgetLimit || 0)) | number: '1.2-2' }}
+          </div>
+        </div>
+      </div>
+
+      <!-- If editing budget -->
+      <div *ngIf="isEditingBudget">
+        <label>Edit Budget Limit (₹)</label>
+        <div class="budget-input-group">
+          <input type="number" [(ngModel)]="budgetInput" placeholder="Enter new budget limit" />
+          <button class="btn-set" (click)="setBudgetLimit()">Save</button>
+          <button class="btn-cancel" (click)="cancelEditBudget()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="charts">
+    <div class="chart-box">
+      <div class="chart-header">
+        <h3>Expense Breakdown</h3>
+        <label for="expense-month" class="sr-only">Select Month</label>
+        <input
+          id="expense-month"
+          type="month"
+          [(ngModel)]="selectedExpenseMonth"
+          (change)="onExpenseFilterChange()"
+          class="month-filter"
+          title="Select month for expense chart"
+        />
+      </div>
+      <div class="chart-container">
+        <canvas #expenseChartCanvas></canvas>
+      </div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-header">
+        <h3>Income vs Expense</h3>
+        <div class="chart-filters">
+          <select
+            [(ngModel)]="selectedIncomeRange"
+            (change)="onIncomeFilterChange()"
+            class="range-filter"
+            title="Select income range"
+          >
+            <option value="3months">Last 3 Months</option>
+            <option value="6months">Last 6 Months</option>
+            <option value="12months">Last 12 Months</option>
+            <option value="year">By Year</option>
+          </select>
+          <select 
+            *ngIf="selectedIncomeRange === 'year'"
+            [(ngModel)]="selectedIncomeYear"
+            (change)="onIncomeFilterChange()"
+            class="year-filter"
+            title="Select year for income chart"
+          >
+            <option *ngFor="let year of availableYears" [value]="year">{{ year }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas #incomeExpenseChartCanvas></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="recent-section">
+    <h3>Recent Transactions</h3>
+    <div *ngIf="recentTransactions.length > 0" class="transactions-list">
+      <div *ngFor="let t of recentTransactions" class="transaction-item" (click)="showDetails(t)">
+        <div class="transaction-left">
+          <div class="transaction-title">{{ t.description }}</div>
+          <div class="transaction-date">{{ getDateFormatted(t.date) }} · {{ t.category }}</div>
+        </div>
+        <div class="transaction-amount" [class]="t.type">
+          {{ t.type === 'income' ? '+' : '-' }}₹{{ (t.amount || 0) | number: '1.2-2' }}
+        </div>
+      </div>
+    </div>
+    <div *ngIf="recentTransactions.length === 0" class="no-data">
+      <p>No transactions yet</p>
+    </div>
+  </div>
+
+  <!-- Transaction Details Modal -->
+  <div class="modal-overlay" *ngIf="selectedTransaction" (click)="closeDetails()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Transaction Details</h3>
+        <button class="btn-edit" (click)="closeDetails()">Close</button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Description:</strong> {{ selectedTransaction.description }}</p>
+        <p><strong>Category:</strong> {{ selectedTransaction.category }}</p>
+        <p><strong>Type:</strong> {{ selectedTransaction.type }}</p>
+        <p><strong>Amount:</strong> ₹{{ selectedTransaction.amount | number:'1.2-2' }}</p>
+        <p><strong>Payment Method:</strong> {{ selectedTransaction.payment_method || '—' }}</p>
+        <p><strong>Date:</strong> {{ getDateFormatted(selectedTransaction.date) }}</p>
+        <p><strong>Created At:</strong> {{ getDateFormatted(selectedTransaction.created_at) }}</p>
+        <p><strong>ID:</strong> {{ selectedTransaction.id }}</p>
+      </div>
+    </div>
+  </div>
+
+</div>

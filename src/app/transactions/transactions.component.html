@@ -1,0 +1,91 @@
+<div class="transactions-container">
+  <div class="transactions-header">
+    <h2>Transactions</h2>
+    <p>View and manage all your financial transactions</p>
+
+    <div class="controls">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (input)="onSearchChange()"
+        placeholder="Search transactions..."
+        class="search-input"
+      />
+
+      <select [(ngModel)]="filterType" (change)="onFilterChange()" class="filter-select" title="Filter by transaction type">
+        <option value="all">All Types</option>
+        <option value="income">Income Only</option>
+        <option value="expense">Expense Only</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="transactions-list">
+    <div *ngIf="filteredTransactions.length > 0; else noData">
+      <div *ngFor="let t of filteredTransactions" class="transaction-row" (click)="showDetails(t)">
+        <!-- Description -->
+        <div class="transaction-main">
+          <div class="transaction-title">{{ t.description }}</div>
+        </div>
+
+        <!-- Category -->
+        <span class="category">{{ t.category }}</span>
+
+        <!-- Date -->
+        <span class="date">{{ getDateFormatted(t.date) }}</span>
+
+        <!-- Type Badge -->
+        <div class="transaction-icon" [class]="t.type">
+          {{ t.type === 'income' ? '+' : '−' }}
+        </div>
+
+        <!-- Amount -->
+        <div class="transaction-amount" [class]="t.type">
+          {{ t.type === 'income' ? '+' : '−' }}₹{{ t.amount | number: '1.2-2' }}
+        </div>
+
+        <!-- Delete Button -->
+        <button class="delete-btn" (click)="$event.stopPropagation(); deleteTransaction(t.id)" title="Delete transaction">Delete</button>
+      </div>
+    </div>
+
+    <ng-template #noData>
+      <div class="no-data">
+        <p>No transactions found. Start by adding income or expense.</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="export-section">
+    <h3>Export</h3>
+    <p class="export-subtitle">Download your data or copy a summary</p>
+    <div class="export-buttons">
+      <button class="export-btn export-csv" (click)="downloadCSV()" title="Download as CSV file">
+        <span>Download CSV</span>
+      </button>
+      <button class="export-btn export-json" (click)="downloadJSON()" title="Download as JSON file">
+        <span>Download JSON</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Transaction Details Modal -->
+  <div class="modal-overlay" *ngIf="selectedTransaction" (click)="closeDetails()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Transaction Details</h3>
+        <button class="delete-btn" (click)="closeDetails()">Close</button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Description:</strong> {{ selectedTransaction.description }}</p>
+        <p><strong>Category:</strong> {{ selectedTransaction.category }}</p>
+        <p><strong>Type:</strong> {{ selectedTransaction.type }}</p>
+        <p><strong>Amount:</strong> ₹{{ selectedTransaction.amount | number:'1.2-2' }}</p>
+        <p><strong>Payment Method:</strong> {{ selectedTransaction.payment_method || '—' }}</p>
+        <p><strong>Date:</strong> {{ getDateFormatted(selectedTransaction.date) }}</p>
+        <p><strong>Created At:</strong> {{ getDateFormatted(selectedTransaction.created_at) }}</p>
+        <p><strong>ID:</strong> {{ selectedTransaction.id }}</p>
+      </div>
+    </div>
+  </div>
+</div>

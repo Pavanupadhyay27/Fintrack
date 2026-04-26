@@ -1,0 +1,24 @@
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--background);
+}
+
+.main-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  background-color: var(--background);
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--background);
+}
+
+.auth-layout {
+  height: 100vh;
+  background-color: var(--background);
+}

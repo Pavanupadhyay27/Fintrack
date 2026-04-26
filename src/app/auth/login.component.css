@@ -1,0 +1,302 @@
+/* ===== LAYOUT ===== */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--background);
+  padding: 16px;
+  position: relative;
+}
+
+.login-box {
+  background: var(--card);
+  padding: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* ===== HEADINGS & TEXT ===== */
+h1 {
+  color: var(--income-green);
+  text-align: center;
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--text-secondary);
+  margin: 0 0 30px;
+  font-size: 13px;
+}
+
+/* ===== FORMS ===== */
+.form-group {
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--text-main);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  background: var(--card);
+  color: var(--text-main);
+  font-family: inherit;
+}
+
+input::placeholder {
+  color: #D1D5DB;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--income-green);
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.08);
+}
+
+/* ===== PASSWORD STRENGTH ===== */
+.password-strength {
+  margin-top: 8px;
+  font-size: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.strength-text {
+  font-weight: 600;
+}
+
+.strength-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.strength-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.password-strength.weak {
+  color: var(--expense-red);
+}
+
+.password-strength.weak .strength-fill {
+  width: 33%;
+  background: var(--expense-red);
+}
+
+.password-strength.medium {
+  color: #F59E0B;
+}
+
+.password-strength.medium .strength-fill {
+  width: 66%;
+  background: #F59E0B;
+}
+
+.password-strength.strong {
+  color: var(--income-green);
+}
+
+.password-strength.strong .strength-fill {
+  width: 100%;
+  background: var(--income-green);
+}
+
+.password-requirements {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: var(--background);
+  border-radius: 6px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+}
+
+.requirement {
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  padding-left: 12px;
+}
+
+.requirement:last-child {
+  margin-bottom: 0;
+}
+
+.requirement.met {
+  color: var(--income-green);
+  font-weight: 600;
+}
+
+/* ===== BUTTONS ===== */
+.btn-submit {
+  width: 100%;
+  padding: 11px;
+  background: var(--income-green);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 10px;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: #15803D;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
+}
+
+.btn-submit:disabled,
+.btn-resend:disabled {
+  background: #9CA3AF;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn-resend {
+  width: 100%;
+  padding: 10px;
+  background: #3B82F6;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+}
+
+.btn-resend:hover:not(:disabled) {
+  background: #2563EB;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+}
+
+.btn-toggle {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  color: var(--income-green);
+  border: 1px solid var(--income-green);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-toggle:hover {
+  background: rgba(22, 163, 74, 0.05);
+}
+
+.divider {
+  margin: 24px 0;
+  border-top: 1px solid var(--border);
+}
+
+/* ===== FORM STATES ===== */
+.form-submitting input,
+.form-submitting select {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===== TOAST NOTIFICATIONS ===== */
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 90%;
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+}
+
+.toast-icon {
+  font-size: 18px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.toast-message {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #9CA3AF;
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.toast-close:hover {
+  color: #6B7280;
+}
+
+.toast-error {
+  background: #FEE2E2;
+  border: 1px solid #FECACA;
+  border-left: 4px solid var(--expense-red);
+}
+
+.toast-error .toast-icon {
+  color: var(--expense-red);
+}
+
+.toast-error .toast-message {
+  color: #7F1D1D;
+}
+
+.toast-success {
+  background: #DCFCE7;
+  border: 1px solid #BBFCE0;
+  border-left: 4px solid var(--income-green);
+}
+
+.toast-success .toast-icon {
+  color: var(--income-green);
+}
+
+.toast-success .toast-message {
+  color: #15803D;
+}

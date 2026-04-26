@@ -1,0 +1,14 @@
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="navbar-brand" (click)="goHome()">Fintrack</div>
+  </div>
+  <div class="navbar-right">
+    <div class="navbar-user">
+      <div class="user-greeting">
+        <div class="user-icon">👤</div>
+        <div>Welcome, {{ name || 'User' }}!</div>
+      </div>
+    </div>
+    <button class="logout-btn" (click)="logout()">Sign Out</button>
+  </div>
+</div>

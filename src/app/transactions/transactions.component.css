@@ -1,0 +1,358 @@
+.transactions-container {
+  padding: 40px 36px;
+  background-color: var(--background);
+  min-height: 100vh;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.transactions-header {
+  margin-bottom: 32px;
+}
+
+h2 {
+  color: #15803D;
+  margin: 0 0 6px 0;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.transactions-header > p {
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin: 0;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.search-input,
+.filter-select {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  background-color: var(--card);
+  color: var(--text-main);
+  transition: all 0.2s ease;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 280px;
+}
+
+.search-input::placeholder {
+  color: #D1D5DB;
+}
+
+.search-input:focus,
+.filter-select:focus {
+  outline: none;
+  border-color: #15803D;
+  box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.08);
+}
+
+.filter-select {
+  min-width: 160px;
+  cursor: pointer;
+}
+
+/* Table-like layout */
+.transactions-list {
+  background-color: var(--card);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.transaction-row {
+  display: grid;
+  grid-template-columns: 200px 120px 100px 80px 1fr 100px;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  gap: 20px;
+  transition: background-color 0.15s ease;
+  font-size: 13px;
+}
+
+.transaction-row:last-child {
+  border-bottom: none;
+}
+
+.transaction-row:hover {
+  background-color: var(--background);
+}
+
+.transaction-row {
+  cursor: pointer;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal {
+  background: var(--card);
+  padding: 18px;
+  border-radius: 8px;
+  width: 480px;
+  max-width: calc(100% - 40px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  border: 1px solid var(--border);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #15803D;
+}
+
+.modal-body {
+  margin-top: 12px;
+  color: var(--text-main);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.modal-body p { margin: 6px 0; }
+
+.transaction-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.transaction-title {
+  color: var(--text-main);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.transaction-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+}
+
+.category {
+  color: var(--text-secondary);
+  background-color: var(--background);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.date {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+/* Column values */
+.transaction-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.transaction-icon.income {
+  background-color: #D1FAE5;
+  color: var(--income-green);
+}
+
+.transaction-icon.expense {
+  background-color: #FEE2E2;
+  color: var(--expense-red);
+}
+
+.transaction-type {
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-align: center;
+}
+
+.transaction-amount {
+  font-size: 13px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.transaction-amount.income {
+  color: var(--income-green);
+}
+
+.transaction-amount.expense {
+  color: var(--expense-red);
+}
+
+.delete-btn {
+  padding: 6px 12px;
+  background-color: #FEE2E2;
+  color: #DC2626;
+  border: 1px solid #FCA5A5;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+  background-color: #FCA5A5;
+  color: #FFFFFF;
+}
+
+.no-data {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.no-data p {
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .transaction-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .transaction-amount {
+    text-align: left;
+  }
+}
+
+@media (max-width: 768px) {
+  .transactions-container {
+    padding: 24px 16px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+
+  .search-input,
+  .filter-select {
+    width: 100%;
+  }
+}
+
+.export-section {
+  margin-top: 32px;
+  padding: 24px;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  background-color: #F8FAFC;
+}
+
+.export-section h3 {
+  margin: 0 0 8px 0;
+  color: #15803D;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.export-subtitle {
+  margin: 0 0 16px 0;
+  color: #6B7280;
+  font-size: 13px;
+}
+
+.export-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.export-btn {
+  padding: 10px 16px;
+  background-color: #15803D;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.export-btn:hover {
+  background-color: #166534;
+  box-shadow: 0 2px 6px rgba(21, 128, 61, 0.2);
+}
+
+.export-btn span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.export-btn.copy-btn {
+  background-color: #16A34A;
+}
+
+.export-btn.copy-btn:hover {
+  background-color: #15803D;
+  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.2);
+}
+
+.copy-feedback {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background-color: #D1FAE5;
+  color: var(--income-green);
+  border-radius: 4px;
+  font-size: 12px;
+  animation: fadeInOut 3s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}

@@ -1,0 +1,67 @@
+<div class="investments-container">
+  <div class="form-box">
+    <h2>Add Investment</h2>
+    <form (ngSubmit)="submit()">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" [(ngModel)]="name" name="name" placeholder="e.g., TCS Stock" />
+      </div>
+      <div class="form-group">
+        <label for="investment-type">Type</label>
+        <select id="investment-type" [(ngModel)]="type" name="type" title="Select investment type">
+          <option *ngFor="let t of investmentTypes" [value]="t">{{ t }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Amount Invested (₹)</label>
+        <input type="number" [(ngModel)]="amount" name="amount" placeholder="Enter amount" step="0.01" />
+      </div>
+      <div class="form-group">
+        <label>Current Value (₹)</label>
+        <input type="number" [(ngModel)]="currentValue" name="currentValue" placeholder="Enter current value" step="0.01" />
+      </div>
+      <div class="form-group">
+        <label for="investment-date">Date</label>
+        <input id="investment-date" type="date" [(ngModel)]="date" name="date" title="Select investment date" />
+      </div>
+      <button type="submit" class="btn-submit">Add Investment</button>
+    </form>
+    <div *ngIf="message" class="message" [class.success]="isSuccess">
+      <span *ngIf="isSuccess" class="checkmark">✓</span>{{ message }}
+    </div>
+  </div>
+
+  <div class="summary-box">
+    <h2>Summary</h2>
+    <div class="summary-row">
+      <div class="summary-item"><label>Total Invested</label><div class="amount">₹{{ getTotalInvested().toFixed(2) }}</div></div>
+      <div class="summary-item"><label>Current Value</label><div class="amount">₹{{ getTotalCurrentValue().toFixed(2) }}</div></div>
+      <div class="summary-item"><label>Profit / Loss</label><div class="amount" [class.profit]="getProfitLoss() >= 0" [class.loss]="getProfitLoss() < 0">₹{{ getProfitLoss().toFixed(2) }} ({{ getProfitLossPercentage() }}%)</div></div>
+    </div>
+
+    <h3>Investments</h3>
+    <div *ngIf="investments.length === 0" class="no-data">No investments yet.</div>
+    <div *ngIf="investments.length > 0" class="investments-list">
+      <div class="table-header">
+        <div class="col-name">Name</div>
+        <div class="col-type">Type</div>
+        <div class="col-amount">Amount</div>
+        <div class="col-current">Current</div>
+        <div class="col-pl">P/L</div>
+        <div class="col-date">Date</div>
+        <div class="col-action">Action</div>
+      </div>
+      <div class="table-rows">
+        <div *ngFor="let inv of investments" class="table-row">
+          <div class="col-name">{{ inv.name }}</div>
+          <div class="col-type">{{ inv.type }}</div>
+          <div class="col-amount">₹{{ inv.amount.toFixed(2) }}</div>
+          <div class="col-current">₹{{ inv.current_value.toFixed(2) }}</div>
+          <div class="col-pl" [class.profit]="(inv.current_value - inv.amount) >= 0" [class.loss]="(inv.current_value - inv.amount) < 0">₹{{ (inv.current_value - inv.amount).toFixed(2) }}</div>
+          <div class="col-date">{{ formatDate(inv.date) }}</div>
+          <div class="col-action"><button (click)="deleteInvestment(inv.id)" class="btn-delete">Delete</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

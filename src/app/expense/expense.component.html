@@ -1,0 +1,55 @@
+<div class="expense-container">
+  <div class="form-box">
+    <h2>Add Expense</h2>
+
+    <form (ngSubmit)="submit()">
+      <div class="form-group">
+        <label>Description</label>
+        <input
+          type="text"
+          [(ngModel)]="description"
+          name="description"
+          placeholder="e.g., Lunch at cafe"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Amount (₹)</label>
+        <input
+          type="number"
+          [(ngModel)]="amount"
+          name="amount"
+          placeholder="Enter amount"
+          step="0.01"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="expense-category">Category</label>
+        <select id="expense-category" [(ngModel)]="category" name="category" title="Select expense category">
+          <option *ngFor="let cat of expenseCategories" [value]="cat">
+            {{ cat }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="payment-method">Payment Method</label>
+        <select id="payment-method" [(ngModel)]="creditCard" name="creditCard" title="Select payment method">
+          <option *ngFor="let card of creditCards" [value]="card">
+            {{ card }}
+          </option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-submit">
+        Add Expense
+      </button>
+    </form>
+
+    <div *ngIf="message" class="message" [class.success]="isSuccess">
+      <span *ngIf="isSuccess" class="checkmark">✓</span>
+      {{ message }}
+    </div>
+  </div>
+</div>

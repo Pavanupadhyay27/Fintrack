@@ -1,0 +1,97 @@
+<div class="login-container">
+  <!-- Toast Notification -->
+  <div *ngIf="showNotification" class="toast-notification" [class]="'toast-' + notificationType">
+    <div class="toast-content">
+      <span class="toast-icon">{{ notificationType === 'error' ? '✕' : '✓' }}</span>
+      <span class="toast-message">{{ notificationMessage }}</span>
+      <button class="toast-close" (click)="closeNotification()">×</button>
+    </div>
+  </div>
+
+  <div class="login-box">
+    <h1>Fintrack</h1>
+    <p class="subtitle">Personal Finance Tracker</p>
+
+    <form (ngSubmit)="submit()" (keydown.enter)="$event.preventDefault()" [ngClass]="{'form-submitting': isSubmitting}">
+      <!-- Registration Form Fields -->
+      <div *ngIf="isRegister" class="form-group">
+        <label>Full Name</label>
+        <input
+          type="text"
+          [(ngModel)]="name"
+          name="name"
+          placeholder="Enter your full name"
+          [disabled]="isSubmitting"
+        />
+      </div>
+
+      <!-- Email (both login and register) -->
+      <div class="form-group">
+        <label>Email</label>
+        <input
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="Enter your email"
+          [disabled]="isSubmitting"
+        />
+      </div>
+
+      <!-- Password (both login and register) -->
+      <div class="form-group">
+        <label>Password</label>
+        <input
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="Enter password"
+          (input)="checkPasswordStrength()"
+          [disabled]="isSubmitting"
+        />
+        
+        <!-- Password Strength Indicator (only during registration) -->
+        <div *ngIf="isRegister && passwordStrength" class="password-strength" [class]="passwordStrength">
+          <span class="strength-text">Password strength: {{ passwordStrength }}</span>
+          <div class="strength-bar">
+            <div class="strength-fill"></div>
+          </div>
+        </div>
+
+        <!-- Password Requirements (only during registration) -->
+        <div *ngIf="isRegister" class="password-requirements">
+          <div class="requirement" [class.met]="hasMinLength()">
+            ✓ At least 6 characters
+          </div>
+          <div class="requirement" [class.met]="hasAlphanumeric()">
+            ✓ Alphanumeric characters
+          </div>
+          <div class="requirement" [class.met]="hasSpecialChar()">
+            ✓ Special character required
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="isSubmitting || cooldownSeconds > 0">
+        <span *ngIf="isSubmitting">
+          {{ isRegister ? 'Registering...' : 'Logging in...' }}
+        </span>
+        <span *ngIf="!isSubmitting && cooldownSeconds > 0">
+          Wait {{ cooldownSeconds }}s
+        </span>
+        <span *ngIf="!isSubmitting && cooldownSeconds === 0">
+          {{ isRegister ? 'Register' : 'Login' }}
+        </span>
+      </button>
+
+      <button type="button" class="btn-resend" *ngIf="showResendButton && !isRegister" (click)="resendVerificationEmail()" [disabled]="isSubmitting">
+        Resend Verification Email
+      </button>
+    </form>
+
+    <div class="divider"></div>
+
+    <button class="btn-toggle" (click)="toggleMode()">
+      {{ isRegister ? 'Already have account? Login' : 'New here? Register' }}
+    </button>
+  </div>
+</div>

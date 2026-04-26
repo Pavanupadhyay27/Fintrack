@@ -1,0 +1,64 @@
+.sidebar {
+  width: 240px;
+  background-color: var(--card);
+  border-right: 1px solid var(--border);
+  padding: 28px 0;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 61px);
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex: 1;
+}
+
+.nav-item {
+  padding: 14px 24px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  background-color: var(--background);
+  color: #15803D;
+  border-left-color: #15803D;
+}
+
+.nav-item.active {
+  background-color: var(--background);
+  border-left-color: #15803D;
+  color: #15803D;
+  font-weight: 600;
+}
+
+.logout-btn {
+  margin: 20px 24px 0 24px;
+  padding: 8px 12px;
+  background-color: #15803D;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #166534;
+  box-shadow: 0 1px 3px rgba(21, 128, 61, 0.2);
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 180px;
+  }
+}
