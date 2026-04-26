@@ -77,15 +77,20 @@
     <div class="chart-box">
       <div class="chart-header">
         <h3>Expense Breakdown</h3>
-        <label for="expense-month" class="sr-only">Select Month</label>
-        <input
-          id="expense-month"
-          type="month"
-          [(ngModel)]="selectedExpenseMonth"
-          (change)="onExpenseFilterChange()"
-          class="month-filter"
-          title="Select month for expense chart"
-        />
+        <div class="month-filter-container">
+          <label for="expense-month" class="sr-only">Select Month</label>
+          <select
+            id="expense-month"
+            [(ngModel)]="selectedExpenseMonth"
+            (change)="onExpenseFilterChange()"
+            class="month-filter"
+            title="Select month for expense chart"
+          >
+            <option *ngFor="let month of availableMonths" [value]="month">
+              {{ getMonthLabel(month) }}
+            </option>
+          </select>
+        </div>
       </div>
       <div class="chart-container">
         <canvas #expenseChartCanvas></canvas>
@@ -157,6 +162,9 @@
         <p><strong>Date:</strong> {{ getDateFormatted(selectedTransaction.date) }}</p>
         <p><strong>Created At:</strong> {{ getDateFormatted(selectedTransaction.created_at) }}</p>
         <p><strong>ID:</strong> {{ selectedTransaction.id }}</p>
+        <div class="modal-actions">
+          <button class="btn-delete" (click)="deleteTransaction(selectedTransaction.id)">Delete Transaction</button>
+        </div>
       </div>
     </div>
   </div>

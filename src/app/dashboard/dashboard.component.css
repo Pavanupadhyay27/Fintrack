@@ -1,4 +1,7 @@
 /* All dashboard styles are in styles.css for better organization */
+.month-filter,
+.range-filter,
+.year-filter {
   font-size: 12px;
   background-color: #FFFFFF;
   color: #111827;
@@ -105,6 +108,30 @@
 }
 
 .modal-body p { margin: 6px 0; }
+
+.modal-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.btn-delete {
+  flex: 1;
+  padding: 8px 12px;
+  background-color: #DC2626;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+  background-color: #B91C1C;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+}
 
 .transaction-item:last-child {
   border-bottom: none;

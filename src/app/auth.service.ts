@@ -69,21 +69,23 @@ export class AuthService {
         return { success: false, message: error.message };
       }
 
-      const user = await this.supabase.getCurrentUser();
-      if (user && !user.email_confirmed_at) {
-        return { 
-          success: false, 
-          message: 'Please verify your email first. Check your inbox for verification link.' 
-        };
-      }
-
-      if (user) {
-        this.currentUser = user;
-        this.currentUserId = user.id;
+      // Don't call getCurrentUser immediately - just use the session data
+      if (data?.user) {
+        this.currentUser = data.user;
+        this.currentUserId = data.user.id;
         this.userCacheTime = Date.now();
+
+        // Check email verification
+        if (!data.user.email_confirmed_at) {
+          return { 
+            success: false, 
+            message: 'Please verify your email first. Check your inbox for verification link.' 
+          };
+        }
+        return { success: true, message: 'Login successful!' };
       }
 
-      return { success: true, message: 'Login successful!' };
+      return { success: false, message: 'Login failed - no user data returned' };
     } catch (err: any) {
       return { success: false, message: err.message || 'Login failed' };
     }

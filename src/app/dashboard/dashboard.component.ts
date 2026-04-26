@@ -93,9 +93,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       const amount = Number(t.amount) || 0;  // Parse as number, fallback to 0
       if (t.type === 'income') {
         this.totalIncome += amount;
-      } else {
+      } else if (t.type === 'expense') {
         this.totalExpense += amount;
       }
+      // Ignore any other types (investments, etc.)
     });
 
     this.balance = this.totalIncome - this.totalExpense;
@@ -374,11 +375,29 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   }
 
+  getMonthLabel(monthStr: string): string {
+    const [year, month] = monthStr.split('-');
+    const date = new Date(parseInt(year), parseInt(month) - 1, 1);
+    return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  }
+
   showDetails(tx: any) {
     this.selectedTransaction = tx;
   }
 
   closeDetails() {
     this.selectedTransaction = null;
+  }
+
+  async deleteTransaction(id: string) {
+    if (confirm('Are you sure you want to delete this transaction?')) {
+      try {
+        await this.storage.deleteTransaction(id);
+        await this.loadData();
+        this.selectedTransaction = null;
+      } catch (error) {
+        alert('Failed to delete transaction');
+      }
+    }
   }
 }

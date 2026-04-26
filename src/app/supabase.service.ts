@@ -10,7 +10,12 @@ export class SupabaseService {
   private authService: any = null; // Will be injected later to avoid circular dependency
 
   constructor() {
-    this.supabase = createClient(environment.supabase.url, environment.supabase.key);
+    this.supabase = createClient(environment.supabase.url, environment.supabase.key, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true
+      }
+    });
   }
 
   setAuthService(authService: any) {
